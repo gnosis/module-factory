@@ -1,7 +1,41 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 pragma solidity >=0.8.0;
 
-import "./DaoModule.sol";
+contract Enum {
+    enum Operation {
+        Call,
+        DelegateCall
+    }
+}
+
+interface Executor {
+    function execTransactionFromModule(
+        address to,
+        uint256 value,
+        bytes calldata data,
+        Enum.Operation operation
+    ) external returns (bool success);
+}
+
+interface Realitio {
+    function resultFor(bytes32 question_id) external view returns (bytes32);
+
+    function getFinalizeTS(bytes32 question_id) external view returns (uint32);
+
+    function getBond(bytes32 question_id) external view returns (uint256);
+}
+
+interface DaoModule {
+    function setUp(
+        Executor _executor,
+        Realitio _oracle,
+        uint32 timeout,
+        uint32 cooldown,
+        uint32 expiration,
+        uint256 bond,
+        uint256 templateId
+    ) external;
+}
 
 contract ModuleProxyFactory {
     event ModuleProxyCreation(address proxy);
@@ -25,9 +59,6 @@ contract ModuleProxyFactory {
         emit ModuleProxyCreation(result);
     }
 
-    // function deployModule(bytes memory initializeParams) public  {
-
-    // }
     function deployModule(
         address target,
         Executor _executor,
