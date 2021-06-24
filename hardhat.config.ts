@@ -8,7 +8,7 @@ import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-etherscan";
 import "hardhat-deploy";
 
-const { ETH_KEY, ETHERSCAN_KEY } = process.env;
+const { ETH_KEY, ETHERSCAN_KEY, INFURA_KEY } = process.env;
 
 const config: HardhatUserConfig = {
   solidity: "0.8.0",
@@ -17,7 +17,7 @@ const config: HardhatUserConfig = {
   },
   networks: {
     rinkeby: {
-      url: "https://rinkeby.infura.io/v3/b76cba91dc954ceebff27244923224b1",
+      url: `https://rinkeby.infura.io/v3/${INFURA_KEY}`,
       accounts: [`0x${ETH_KEY}`],
     },
   },
