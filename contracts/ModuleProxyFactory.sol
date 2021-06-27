@@ -6,6 +6,7 @@ contract ModuleProxyFactory {
 
     function createClone(address target) internal returns (address result) {
         bytes20 targetBytes = bytes20(target);
+        // solhint-disable-next-line no-inline-assembly
         assembly {
             let clone := mload(0x40)
             mstore(
@@ -23,13 +24,25 @@ contract ModuleProxyFactory {
         emit ModuleProxyCreation(result);
     }
 
-    function deployModule(address singleton, bytes memory params)
+    function deployModule(address singleton, bytes memory initializer)
         public
         returns (address clone)
     {
         clone = createClone(singleton);
+        // solhint-disable-next-line no-inline-assembly
         assembly {
-            if eq(call(gas(), clone, 0, add(params, 0x20), mload(params), 0, 0), 0) {
+            if eq(
+                call(
+                    gas(),
+                    clone,
+                    0,
+                    add(initializer, 0x20),
+                    mload(initializer),
+                    0,
+                    0
+                ),
+                0
+            ) {
                 revert(0, 0)
             }
         }
