@@ -10,6 +10,7 @@ const main = async () => {
   console.log("ModuleProxyFactory deployed");
   return moduleProxyFactory.address;
 };
+
 // const main = async () => {
 //   const DaoModule = await ethers.getContractFactory("DaoModule");
 //   const daoModule = await DaoModule.deploy();

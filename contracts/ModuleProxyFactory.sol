@@ -1,42 +1,6 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 pragma solidity >=0.8.0;
 
-contract Enum {
-    enum Operation {
-        Call,
-        DelegateCall
-    }
-}
-
-interface Executor {
-    function execTransactionFromModule(
-        address to,
-        uint256 value,
-        bytes calldata data,
-        Enum.Operation operation
-    ) external returns (bool success);
-}
-
-interface Realitio {
-    function resultFor(bytes32 question_id) external view returns (bytes32);
-
-    function getFinalizeTS(bytes32 question_id) external view returns (uint32);
-
-    function getBond(bytes32 question_id) external view returns (uint256);
-}
-
-interface DaoModule {
-    function setUp(
-        Executor _executor,
-        Realitio _oracle,
-        uint32 timeout,
-        uint32 cooldown,
-        uint32 expiration,
-        uint256 bond,
-        uint256 templateId
-    ) external;
-}
-
 contract ModuleProxyFactory {
     event ModuleProxyCreation(address proxy);
 
@@ -59,26 +23,16 @@ contract ModuleProxyFactory {
         emit ModuleProxyCreation(result);
     }
 
-    function deployModule(
-        address target,
-        Executor _executor,
-        Realitio _oracle,
-        uint32 timeout,
-        uint32 cooldown,
-        uint32 expiration,
-        uint256 bond,
-        uint256 templateId
-    ) public returns (address clone) {
-        clone = createClone(target);
-        DaoModule(clone).setUp(
-            _executor,
-            _oracle,
-            timeout,
-            cooldown,
-            expiration,
-            bond,
-            templateId
-        );
-        ModuleProxyCreation(clone);
+    function deployModule(address singleton, bytes memory params)
+        public
+        returns (address clone)
+    {
+        clone = createClone(singleton);
+        assembly {
+            if eq(call(gas(), clone, 0, add(params, 0x20), mload(params), 0, 0), 0) {
+                revert(0, 0)
+            }
+        }
+        emit ModuleProxyCreation(clone);
     }
 }
