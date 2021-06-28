@@ -38,7 +38,7 @@ const main = async () => {
     params
   );
 
-  const trans = await t.wait();
+  const trans = await t.wait(3);
   console.log(trans);
 };
 
