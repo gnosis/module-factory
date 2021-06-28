@@ -4,6 +4,8 @@ pragma solidity >=0.8.0;
 contract ModuleProxyFactory {
     event ModuleProxyCreation(address proxy);
 
+    uint32 public nonce = 1;
+
     function createClone(address target) internal returns (address result) {
         bytes20 targetBytes = bytes20(target);
         // solhint-disable-next-line no-inline-assembly
@@ -46,6 +48,7 @@ contract ModuleProxyFactory {
                 revert(0, 0)
             }
         }
+        nonce++;
         emit ModuleProxyCreation(clone);
     }
 }

@@ -3,11 +3,13 @@ import { deployments, ethers } from "hardhat";
 import { BigNumber } from "ethers";
 
 import "@nomiclabs/hardhat-ethers";
+import { calculateProxyAddress } from "./utils";
 
 describe("ModuleProxyFactory", async () => {
   const factorySetup = deployments.createFixture(async () => {
     await deployments.fixture();
-    const [{ address: ownerAddress }, { address: randomAddress }] = await ethers.getSigners();
+    const [{ address: ownerAddress }, { address: randomAddress }] =
+      await ethers.getSigners();
 
     const ModuleProxyFactory = await ethers.getContractFactory(
       "ModuleProxyFactory"
@@ -42,7 +44,8 @@ describe("ModuleProxyFactory", async () => {
       const EXPIRATION = 2000;
       const TEMPLATE_ID = 1;
 
-      const { moduleFactory, daoModuleMasterCopy, ownerAddress } = await factorySetup();
+      const { moduleFactory, daoModuleMasterCopy, ownerAddress } =
+        await factorySetup();
 
       const initializeParams = daoModuleMasterCopy.interface.encodeFunctionData(
         "setUp",
@@ -57,6 +60,9 @@ describe("ModuleProxyFactory", async () => {
         ]
       );
 
+      const nonce = await moduleFactory.nonce();
+      const expectedAddress = await calculateProxyAddress(moduleFactory, nonce);
+
       const moduleDeployment = await moduleFactory.deployModule(
         daoModuleMasterCopy.address,
         initializeParams
@@ -65,6 +71,8 @@ describe("ModuleProxyFactory", async () => {
       const transaction = await moduleDeployment.wait();
 
       const [_, { address: moduleAddress }] = transaction.logs;
+
+      expect(moduleAddress).to.be.equals(expectedAddress);
 
       const newDaoModule = await ethers.getContractAt(
         "DaoModuleMock",
@@ -88,13 +96,17 @@ describe("ModuleProxyFactory", async () => {
 
     it("should deploy and set up AMB Module", async () => {
       const AMB_ADDRESS = "0xD4075FB57fCf038bFc702c915Ef9592534bED5c1";
-      const CHAIN_ID = "0x0000000000000000000000000000000000000000000000000000000000000004";
+      const CHAIN_ID =
+        "0x0000000000000000000000000000000000000000000000000000000000000004";
       const {
         moduleFactory,
         ambModuleMasterCopy,
         ownerAddress,
         randomAddress,
       } = await factorySetup();
+
+      const nonce = await moduleFactory.nonce();
+      const expectedAddress = await calculateProxyAddress(moduleFactory, nonce);
 
       const initializeParams = ambModuleMasterCopy.interface.encodeFunctionData(
         "setUp",
@@ -109,6 +121,7 @@ describe("ModuleProxyFactory", async () => {
       const transaction = await moduleDeployment.wait();
       const [_, { address: moduleAddress }] = transaction.logs;
 
+      expect(moduleAddress).to.be.equals(expectedAddress);
       const newAmbModule = await ethers.getContractAt(
         "AMBModuleMock",
         moduleAddress
@@ -129,13 +142,16 @@ describe("ModuleProxyFactory", async () => {
       const COOLDOWN = 180;
       const EXPIRATION = 2000;
       const { moduleFactory, ownerAddress, delayModuleMasterCopy } = await factorySetup();
-
+      
       const initializeParams = delayModuleMasterCopy.interface.encodeFunctionData("setUp", [
         ownerAddress,
         COOLDOWN,
         EXPIRATION,
       ]);
-
+      
+      const nonce = await moduleFactory.nonce();
+      const expectedAddress = await calculateProxyAddress(moduleFactory, nonce);
+      
       const moduleDeployment = await moduleFactory.deployModule(
         delayModuleMasterCopy.address,
         initializeParams
@@ -143,6 +159,7 @@ describe("ModuleProxyFactory", async () => {
 
       const transaction = await moduleDeployment.wait();
       const [_, { address: moduleAddress }] = transaction.logs;
+      expect(moduleAddress).to.be.equals(expectedAddress);
 
       const newDelayModule = await ethers.getContractAt(
         "DelayModuleMock",
