@@ -1,38 +1,10 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 pragma solidity >=0.8.0;
 
-interface Realitio {
-    function resultFor(bytes32 questionId) external view returns (bytes32);
-    function getFinalizeTS(bytes32 questionId) external view returns (uint32);
-    function getBond(bytes32 questionId) external view returns (uint256);
-    function askQuestion(
-        uint256 template_id,
-        string calldata question,
-        address arbitrator,
-        uint32 timeout,
-        uint32 opening_ts,
-        uint256 nonce
-    ) external returns (bytes32);
-}
+import "../interfaces/Executor.sol";
+import "../interfaces/Realitio.sol";
 
-contract Enum {
-    enum Operation {
-        Call, DelegateCall
-    }
-}
-
-interface Executor {
-    /// @dev Allows a Module to execute a transaction.
-    /// @param to Destination address of module transaction.
-    /// @param value Ether value of module transaction.
-    /// @param data Data payload of module transaction.
-    /// @param operation Operation type of module transaction.
-    function execTransactionFromModule(address to, uint256 value, bytes calldata data, Enum.Operation operation)
-        external
-        returns (bool success);
-}
-
-contract DaoModuleMock {
+contract DaoModule {
 
     bytes32 public constant INVALIDATED = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF;
 
@@ -62,7 +34,7 @@ contract DaoModuleMock {
     address public questionArbitrator;
     uint256 public minimumBond;
 
-    bool isInitialized = false;
+    bool public isInitialized = false;
 
     // Mapping of question hash to question id. Special case: INVALIDATED for question hashes that have been invalidated
     mapping(bytes32 => bytes32) public questionIds;

@@ -8,6 +8,7 @@
     "build": "hardhat compile",
     "test": "hardhat test",
     "coverage": "hardhat coverage",
+    "deploy": "hardhat deploy",
     "lint": "yarn lint:sol",
     "lint:sol": "solhint 'contracts/**/*.sol'",
     "lint:ts": "eslint --max-warnings 0 .",

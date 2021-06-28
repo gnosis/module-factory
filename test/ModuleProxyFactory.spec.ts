@@ -16,13 +16,13 @@ describe("ModuleProxyFactory", async () => {
     );
     const moduleFactory = await ModuleProxyFactory.deploy();
 
-    const DaoModule = await ethers.getContractFactory("DaoModuleMock");
+    const DaoModule = await ethers.getContractFactory("DaoModule");
     const daoModuleMasterCopy = await DaoModule.deploy();
 
-    const AmbModule = await ethers.getContractFactory("AMBModuleMock");
+    const AmbModule = await ethers.getContractFactory("AMBModule");
     const ambModuleMasterCopy = await AmbModule.deploy();
 
-    const DelayModule = await ethers.getContractFactory("DelayModuleMock");
+    const DelayModule = await ethers.getContractFactory("DelayModule");
     const delayModuleMasterCopy = await DelayModule.deploy();
 
     return {
@@ -75,7 +75,7 @@ describe("ModuleProxyFactory", async () => {
       expect(moduleAddress).to.be.equals(expectedAddress);
 
       const newDaoModule = await ethers.getContractAt(
-        "DaoModuleMock",
+        "DaoModule",
         moduleAddress
       );
 
@@ -123,7 +123,7 @@ describe("ModuleProxyFactory", async () => {
 
       expect(moduleAddress).to.be.equals(expectedAddress);
       const newAmbModule = await ethers.getContractAt(
-        "AMBModuleMock",
+        "AMBModule",
         moduleAddress
       );
 
@@ -162,7 +162,7 @@ describe("ModuleProxyFactory", async () => {
       expect(moduleAddress).to.be.equals(expectedAddress);
 
       const newDelayModule = await ethers.getContractAt(
-        "DelayModuleMock",
+        "DelayModule",
         moduleAddress
       );
 
