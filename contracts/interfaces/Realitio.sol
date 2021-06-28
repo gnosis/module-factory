@@ -9,11 +9,11 @@ interface Realitio {
     function getBond(bytes32 questionId) external view returns (uint256);
 
     function askQuestion(
-        uint256 template_id,
+        uint256 templateId,
         string calldata question,
         address arbitrator,
         uint32 timeout,
-        uint32 opening_ts,
+        uint32 openingTs,
         uint256 nonce
     ) external returns (bytes32);
 }

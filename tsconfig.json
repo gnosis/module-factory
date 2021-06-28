@@ -10,9 +10,8 @@
   },
   "include": [
     "hardhat.config.ts",
-    "./scripts",
-    "./test",
-    "typechain/**/*"
+    "./src",
+    "./test"
   ],
   "files": ["hardhat.config.ts"]
 }

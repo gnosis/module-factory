@@ -5,9 +5,16 @@ import "../interfaces/Executor.sol";
 
 interface IAMB {
     function messageSender() external view returns (address);
+
     function messageId() external view returns (bytes32);
+
     function messageSourceChainId() external view returns (bytes32);
-    function requireToPassMessage(address _contract, bytes memory _data, uint256 _gas) external returns (bytes32);
+
+    function requireToPassMessage(
+        address _contract,
+        bytes memory _data,
+        uint256 _gas
+    ) external returns (bytes32);
 }
 
 contract AMBModule {
@@ -28,7 +35,12 @@ contract AMBModule {
     /// @param _amb Address of the AMB contract
     /// @param _owner Address of the authorized owner contract on the other side of the bridge
     /// @param _chainId Address of the authorized chainId from which owner can initiate transactions
-    function setUp(Executor _executor, IAMB _amb, address _owner, bytes32 _chainId) external {
+    function setUp(
+        Executor _executor,
+        IAMB _amb,
+        address _owner,
+        bytes32 _chainId
+    ) external {
         require(!isInitialized, "Module is already initialized");
         executor = _executor;
         amb = _amb;
@@ -55,10 +67,7 @@ contract AMBModule {
     /// @dev Set the AMB contract address
     /// @param _amb Address of the AMB contract
     /// @notice This can only be called by the executor
-    function setAmb(address _amb)
-        public
-        executorOnly()
-    {
+    function setAmb(address _amb) public executorOnly() {
         require(address(amb) != _amb, "AMB address already set to this");
         amb = IAMB(_amb);
     }
@@ -66,10 +75,7 @@ contract AMBModule {
     /// @dev Set the approved chainId
     /// @param _chainId ID of the approved network
     /// @notice This can only be called by the executor
-    function setChainId(bytes32 _chainId)
-        public
-        executorOnly()
-    {
+    function setChainId(bytes32 _chainId) public executorOnly() {
         require(chainId != _chainId, "chainId already set to this");
         chainId = _chainId;
     }
@@ -77,10 +83,7 @@ contract AMBModule {
     /// @dev Set the owner address
     /// @param _owner Set the address of owner on the other side of the bridge
     /// @notice This can only be called by the executor
-    function setOwner(address _owner)
-        public
-        executorOnly()
-    {
+    function setOwner(address _owner) public executorOnly() {
         require(owner != _owner, "owner already set to this");
         owner = _owner;
     }
@@ -90,10 +93,15 @@ contract AMBModule {
     /// @param value Wei value of the transaction that should be executed
     /// @param data Data of the transaction that should be executed
     /// @param operation Operation (Call or Delegatecall) of the transaction that should be executed
-    function executeTransaction(address to, uint256 value, bytes memory data, Enum.Operation operation)
-        public
-        onlyValid()
-    {
-        require(executor.execTransactionFromModule(to, value, data, operation), "Module transaction failed");
+    function executeTransaction(
+        address to,
+        uint256 value,
+        bytes memory data,
+        Enum.Operation operation
+    ) public onlyValid() {
+        require(
+            executor.execTransactionFromModule(to, value, data, operation),
+            "Module transaction failed"
+        );
     }
 }

@@ -1,38 +1,38 @@
 import { expect } from "chai";
 import { deployments, ethers } from "hardhat";
-import { BigNumber } from "ethers";
+import { BigNumber, Contract } from "ethers";
 
 import "@nomiclabs/hardhat-ethers";
 import { calculateProxyAddress } from "./utils";
 
 describe("ModuleProxyFactory", async () => {
-  const factorySetup = deployments.createFixture(async () => {
-    await deployments.fixture();
-    const [{ address: ownerAddress }, { address: randomAddress }] =
+  let ownerAddress: string;
+  let randomAddress: string;
+  let moduleFactory: Contract;
+  let daoModuleMasterCopy: Contract;
+  let ambModuleMasterCopy: Contract;
+  let delayModuleMasterCopy: Contract;
+
+  before(async () => {
+    const [{ address: _ownerAddress }, { address: _randomAddress }] =
       await ethers.getSigners();
+
+    ownerAddress = _ownerAddress;
+    randomAddress = _randomAddress;
 
     const ModuleProxyFactory = await ethers.getContractFactory(
       "ModuleProxyFactory"
     );
-    const moduleFactory = await ModuleProxyFactory.deploy();
+    moduleFactory = await ModuleProxyFactory.deploy();
 
     const DaoModule = await ethers.getContractFactory("DaoModule");
-    const daoModuleMasterCopy = await DaoModule.deploy();
+    daoModuleMasterCopy = await DaoModule.deploy();
 
     const AmbModule = await ethers.getContractFactory("AMBModule");
-    const ambModuleMasterCopy = await AmbModule.deploy();
+    ambModuleMasterCopy = await AmbModule.deploy();
 
     const DelayModule = await ethers.getContractFactory("DelayModule");
-    const delayModuleMasterCopy = await DelayModule.deploy();
-
-    return {
-      ownerAddress,
-      randomAddress,
-      moduleFactory,
-      daoModuleMasterCopy,
-      ambModuleMasterCopy,
-      delayModuleMasterCopy,
-    };
+    delayModuleMasterCopy = await DelayModule.deploy();
   });
 
   describe("deployModule ", () => {
@@ -43,9 +43,6 @@ describe("ModuleProxyFactory", async () => {
       const COOLDOWN = 180;
       const EXPIRATION = 2000;
       const TEMPLATE_ID = 1;
-
-      const { moduleFactory, daoModuleMasterCopy, ownerAddress } =
-        await factorySetup();
 
       const initializeParams = daoModuleMasterCopy.interface.encodeFunctionData(
         "setUp",
@@ -98,12 +95,6 @@ describe("ModuleProxyFactory", async () => {
       const AMB_ADDRESS = "0xD4075FB57fCf038bFc702c915Ef9592534bED5c1";
       const CHAIN_ID =
         "0x0000000000000000000000000000000000000000000000000000000000000004";
-      const {
-        moduleFactory,
-        ambModuleMasterCopy,
-        ownerAddress,
-        randomAddress,
-      } = await factorySetup();
 
       const nonce = await moduleFactory.nonce();
       const expectedAddress = await calculateProxyAddress(moduleFactory, nonce);
@@ -141,17 +132,17 @@ describe("ModuleProxyFactory", async () => {
     it("should deploy and set up Delay Module ", async () => {
       const COOLDOWN = 180;
       const EXPIRATION = 2000;
-      const { moduleFactory, ownerAddress, delayModuleMasterCopy } = await factorySetup();
-      
-      const initializeParams = delayModuleMasterCopy.interface.encodeFunctionData("setUp", [
-        ownerAddress,
-        COOLDOWN,
-        EXPIRATION,
-      ]);
-      
+
+      const initializeParams =
+        delayModuleMasterCopy.interface.encodeFunctionData("setUp", [
+          ownerAddress,
+          COOLDOWN,
+          EXPIRATION,
+        ]);
+
       const nonce = await moduleFactory.nonce();
       const expectedAddress = await calculateProxyAddress(moduleFactory, nonce);
-      
+
       const moduleDeployment = await moduleFactory.deployModule(
         delayModuleMasterCopy.address,
         initializeParams
