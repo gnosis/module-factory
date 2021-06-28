@@ -1,0 +1,6 @@
+{
+  "skip_files": [
+    "contracts/lib",
+    "contracts/interfaces"
+  ]
+}

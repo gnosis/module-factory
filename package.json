@@ -3,8 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "deploy:rinkeby": "hardhat run scripts/deploy.ts --network rinkeby",
-    "interact:rinkeby": "hardhat run scripts/interact.ts --network rinkeby",
     "build": "hardhat compile",
     "test": "hardhat test",
     "coverage": "hardhat coverage",

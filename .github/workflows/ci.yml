@@ -1,4 +1,4 @@
-name: module-proxy-factory
+name: module-factory
 on: [push]
 
 jobs:

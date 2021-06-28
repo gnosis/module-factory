@@ -1,8 +1,10 @@
 module.exports = {
   skipFiles: [
-    "test/DaoModuleMock.sol",
-    "test/AMBModuleMock.sol",
-    "test/DelayModuleMock.sol",
+    "lib/DaoModule.sol",
+    "lib/AMBModule.sol",
+    "lib/DelayModule.sol",
+    "interfaces/Executor.sol",
+    "interfaces/Realitio.sol",
   ],
   mocha: {
     grep: "@skip-on-coverage", // Find everything with this tag
