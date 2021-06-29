@@ -1,9 +1,11 @@
 {
-  "name": "module-factory",
+  "name": "@gnosis/module-factory",
   "version": "1.0.0",
   "description": "",
+  "main": "index.js",
   "scripts": {
-    "build": "hardhat compile",
+    "build": "tsc",
+    "compile": "hardhat compile",
     "test": "hardhat test",
     "coverage": "hardhat coverage",
     "deploy": "hardhat deploy",

@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { deployments, ethers } from "hardhat";
+import { ethers } from "hardhat";
 import { BigNumber, Contract } from "ethers";
+import { calculateProxyAddress } from "../src/factory";
 
 import "@nomiclabs/hardhat-ethers";
-import { calculateProxyAddress } from "./utils";
 
 describe("ModuleProxyFactory", async () => {
   let ownerAddress: string;
@@ -57,8 +57,7 @@ describe("ModuleProxyFactory", async () => {
         ]
       );
 
-      const nonce = await moduleFactory.nonce();
-      const expectedAddress = await calculateProxyAddress(moduleFactory, nonce);
+      const expectedAddress = await calculateProxyAddress(moduleFactory);
 
       const moduleDeployment = await moduleFactory.deployModule(
         daoModuleMasterCopy.address,
@@ -96,8 +95,7 @@ describe("ModuleProxyFactory", async () => {
       const CHAIN_ID =
         "0x0000000000000000000000000000000000000000000000000000000000000004";
 
-      const nonce = await moduleFactory.nonce();
-      const expectedAddress = await calculateProxyAddress(moduleFactory, nonce);
+      const expectedAddress = await calculateProxyAddress(moduleFactory);
 
       const initializeParams = ambModuleMasterCopy.interface.encodeFunctionData(
         "setUp",
@@ -140,8 +138,7 @@ describe("ModuleProxyFactory", async () => {
           EXPIRATION,
         ]);
 
-      const nonce = await moduleFactory.nonce();
-      const expectedAddress = await calculateProxyAddress(moduleFactory, nonce);
+      const expectedAddress = await calculateProxyAddress(moduleFactory);
 
       const moduleDeployment = await moduleFactory.deployModule(
         delayModuleMasterCopy.address,
