@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LGPL-3.0-only
 pragma solidity >=0.8.0;
 
-
 // @TODO: Cesar's opinion: This is the way we should import external modules
 // currently it's not working because there are redundant declarations
 // i.e: Enum or Executor - Making the compile script to fail
@@ -59,6 +58,5 @@ contract ModuleProxyFactory {
             }
         }
         nonce++;
-        emit ModuleProxyCreation(clone);
     }
 }

@@ -1,7 +1,7 @@
-import {
+export {
   deployAndSetUpModule,
   calculateProxyAddress,
   getFactoryAndModule,
 } from "./factory";
-import { KnownContracts, ContractAddresses, KnownModules } from "./types";
-import { CONTRACT_ADDRESSES, CONTRACT_ABIS } from "./constants";
+export { KnownContracts, ContractAddresses, KnownModules } from "./types";
+export { CONTRACT_ADDRESSES, CONTRACT_ABIS } from "./constants";

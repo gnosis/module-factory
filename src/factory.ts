@@ -15,17 +15,17 @@ export const deployAndSetUpModule = async (
     chainId
   );
   const moduleSetupData = module.interface.encodeFunctionData("setUp", args);
+
+  const expectedModuleAddress = await calculateProxyAddress(factory);
+
   const deployData = factory.interface.encodeFunctionData("deployModule", [
     module.address,
     moduleSetupData,
   ]);
-
-  const expectedModuleAddress = await calculateProxyAddress(factory);
-
   const transaction = {
     data: deployData,
     to: factory.address,
-    value: "0x",
+    value: "0",
   };
   return {
     transaction,
