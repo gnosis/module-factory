@@ -6,20 +6,33 @@ const deploy: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await getNamedAccounts();
   const { deploy } = deployments;
 
-  await deploy("DaoModule", {
+  const daoModule = await deploy("DaoModule", {
     from: deployer,
     args: [],
     log: true,
   });
-  await deploy("AMBModule", {
+
+  const ambModule = await deploy("AMBModule", {
     from: deployer,
     args: [],
     log: true,
   });
-  await deploy("DelayModule", {
+  const delayModule = await deploy("DelayModule", {
     from: deployer,
     args: [],
     log: true,
+  });
+  await hre.run("verify:verify", {
+    address: daoModule.address,
+    constructorArguments: [],
+  });
+  await hre.run("verify:verify", {
+    address: ambModule.address,
+    constructorArguments: [],
+  });
+  await hre.run("verify:verify", {
+    address: delayModule.address,
+    constructorArguments: [],
   });
 };
 export default deploy;

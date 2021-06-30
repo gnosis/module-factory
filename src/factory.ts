@@ -7,7 +7,7 @@ export const deployAndSetUpModule = async (
   moduleName: keyof KnownModules,
   args: Array<number | string>,
   provider: JsonRpcProvider,
-  chainId?: number
+  chainId: number
 ) => {
   const { factory, module } = await getFactoryAndMasterCopy(
     moduleName,
@@ -57,13 +57,8 @@ export const getModule = (
 export const getFactoryAndMasterCopy = async (
   moduleName: keyof KnownModules,
   provider: JsonRpcProvider,
-  chainId?: number
+  chainId: number
 ) => {
-  if (!chainId) {
-    const network = await provider.getNetwork();
-    chainId = network.chainId;
-  }
-
   const masterCopyAddress = CONTRACT_ADDRESSES[chainId][moduleName];
   const factoryAddress = CONTRACT_ADDRESSES[chainId].factory;
   const module = getModule(moduleName, masterCopyAddress, provider);

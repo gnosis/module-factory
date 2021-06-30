@@ -8,10 +8,10 @@ export const CONTRACT_ADDRESSES: Record<number, ContractAddresses> = {
     factory: "",
   },
   4: {
-    dao: "0x8a5218F72A9F77eA737cc0FE3466f37a42dAF632",
-    amb: "0x3edd483F59bE021940dc27475e21E74Daf3fE531",
-    delay: "0x3e4405E7ABeBA5af7e724E9642857963026Fa05E",
-    factory: "0x184Befc81F0A6983c37d8ae2F5de10AA247409f2",
+    dao: "0x0049B9A81E602C846807873026C20CC56038E571",
+    amb: "0x399E5e6424DF1448dB19fccFbc9E3DCef95c9f34",
+    delay: "0xC67cE465f76eAa84bb7560d19F7339D1aEdA201a",
+    factory: "0xE9E80739Af9D0DD8AaE6255c96a1266c059469ba",
   },
 };
 
