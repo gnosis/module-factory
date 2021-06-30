@@ -5,6 +5,7 @@
   "main": "./dist/src/index.js",
   "typings": "./dist/src/index.d.ts",
   "scripts": {
+    "prebuild": "yarn compile",
     "build": "tsc",
     "compile": "hardhat compile",
     "test": "hardhat test",
