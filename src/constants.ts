@@ -16,32 +16,9 @@ export const CONTRACT_ADDRESSES: Record<number, ContractAddresses> = {
 };
 
 export const CONTRACT_ABIS = {
-  dao: [
-    `function setUp(
-      address _executor,
-      address _oracle,
-      uint32 timeout,
-      uint32 cooldown,
-      uint32 expiration,
-      uint256 bond,
-      uint256 templateId
-    ) external`,
-  ],
-  amb: [
-    `function setUp(
-      address _executor,
-      address _amb,
-      address _owner,
-      bytes32 _chainId
-    ) external`,
-  ],
-  delay: [
-    `function setUp(
-      address _executor,
-      uint256 cooldown,
-      uint256 expiration
-    ) external`,
-  ],
+  dao: require("../artifacts/contracts/lib/DaoModule.sol/DaoModule.json").abi,
+  amb: require("../artifacts/contracts/lib/AMBModule.sol/AMBModule.json").abi,
+  delay: require("../artifacts/contracts/lib/DelayModule.sol/DelayModule.json").abi,
   factory: [
     `function deployModule(
       address singleton, 
