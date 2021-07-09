@@ -2,6 +2,7 @@ import { ethers, Contract, Signer } from "ethers";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { CONTRACT_ADDRESSES, CONTRACT_ABIS } from "./constants";
 import { KnownModules } from "./types";
+import { keccak256 } from "ethers/lib/utils";
 
 export const deployAndSetUpModule = async (
   moduleName: keyof KnownModules,
@@ -16,7 +17,11 @@ export const deployAndSetUpModule = async (
   );
   const moduleSetupData = module.interface.encodeFunctionData("setUp", args);
 
-  const expectedModuleAddress = await calculateProxyAddress(factory);
+  const expectedModuleAddress = await calculateProxyAddress(
+    factory,
+    module.address,
+    moduleSetupData
+  );
 
   const deployData = factory.interface.encodeFunctionData("deployModule", [
     module.address,
@@ -33,12 +38,14 @@ export const deployAndSetUpModule = async (
   };
 };
 
-export const calculateProxyAddress = async (factory: Contract) => {
-  const nonce = await factory.nonce();
-  return ethers.utils.getContractAddress({
-    from: factory.address,
-    nonce,
-  });
+export const calculateProxyAddress = async (
+  factory: Contract,
+  masterCopy: string,
+  initData: string
+) => {
+  const deploymentCode = `0x3d602d80600a3d3981f3363d3d373d3d3d363d73${masterCopy}5af43d82803e903d91602b57fd5bf3`;
+  const salt = keccak256(initData);
+  return ethers.utils.getCreate2Address(factory.address, salt, deploymentCode);
 };
 
 export const getModule = (

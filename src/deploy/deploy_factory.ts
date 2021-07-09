@@ -1,4 +1,4 @@
-import { DeployFunction } from "hardhat-deploy/types";
+import { DeployFunction, DeployResult } from "hardhat-deploy/types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 
 const deploy: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
@@ -6,11 +6,12 @@ const deploy: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await getNamedAccounts();
   const { deploy } = deployments;
 
-  const factory = await deploy("ModuleProxyFactory", {
+  const factory: DeployResult = await deploy("ModuleProxyFactory", {
     from: deployer,
     args: [],
     log: true,
   });
+
   await hre.run("verify:verify", {
     address: factory.address,
     constructorArguments: [],
