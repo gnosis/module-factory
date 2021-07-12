@@ -24,8 +24,6 @@ contract ModuleProxyFactory {
         assembly {
             result := create2(0, add(deployment, 0x20), mload(deployment), salt)
         }
-
-        emit ModuleProxyCreation(result, target);
     }
 
     function deployModule(address masterCopy, bytes memory initializer)
@@ -34,6 +32,8 @@ contract ModuleProxyFactory {
     {
         proxy = createProxy(masterCopy, keccak256(initializer));
         (bool success, ) = proxy.call(initializer);
-        require(success);
+        require(success, "deployModule: initialization failed");
+
+        emit ModuleProxyCreation(proxy, masterCopy);
     }
 }
