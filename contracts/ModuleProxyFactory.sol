@@ -2,13 +2,19 @@
 pragma solidity >=0.8.0;
 
 contract ModuleProxyFactory {
-    event ModuleProxyCreation(address proxy);
+    event ModuleProxyCreation(
+        address indexed proxy,
+        address indexed masterCopy
+    );
 
     function createProxy(address target, bytes32 salt)
         internal
         returns (address result)
     {
-        // TODO: add check if contract already exists
+        require(
+            address(target) != address(0),
+            "createProxy: address can not be zero"
+        );
         bytes memory deployment = abi.encodePacked(
             hex"3d602d80600a3d3981f3363d3d373d3d3d363d73",
             target,
@@ -18,6 +24,8 @@ contract ModuleProxyFactory {
         assembly {
             result := create2(0, add(deployment, 0x20), mload(deployment), salt)
         }
+
+        emit ModuleProxyCreation(result, target);
     }
 
     function deployModule(address masterCopy, bytes memory initializer)

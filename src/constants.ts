@@ -23,15 +23,35 @@ export const CONTRACT_ABIS = {
     `function setMinimumBond(uint256 bond) public`,
     `function setTemplate(bytes32 template) public`,
     `function setAnswerExpiration(uint32 expiration) public`,
+    `function setUp(
+      address _executor, 
+      address _oracle, 
+      uint32 timeout, 
+      uint32 cooldown, 
+      uint32 expiration, 
+      uint256 bond, 
+      uint256 templateId
+    ) public`,
   ],
   amb: [
     `function setAmb(address _amb) public`,
     `function setChainId(bytes32 _chainId) public`,
     `function setOwner(address _owner) public`,
+    `function setUp(
+      address _executor,
+      address _amb,
+      address _owner,
+      bytes32 _chainId
+    ) public`,
   ],
   delay: [
     `function setTxCooldown(uint256 cooldown) public`,
     `function setTxExpiration(uint256 expiration) public`,
+    `function setUp(
+      Executor _executor,
+      uint256 cooldown,
+      uint256 expiration
+    ) public`,
   ],
   factory: [
     `function deployModule(
