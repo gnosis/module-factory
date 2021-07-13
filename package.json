@@ -1,7 +1,7 @@
 {
   "name": "@gnosis/module-factory",
   "version": "1.0.0",
-  "description": "",
+  "description": "Minimal Proxy Factory to deploy Safe Modules",
   "main": "./dist/src/index.js",
   "typings": "./dist/src/index.d.ts",
   "scripts": {
@@ -10,19 +10,19 @@
     "compile": "hardhat compile",
     "test": "hardhat test",
     "coverage": "hardhat coverage",
-    "deploy": "hardhat deploy --network rinkeby",
+    "deploy:mainnet": "hardhat deploy --network mainnet",
+    "deploy:rinkeby": "hardhat deploy --network rinkeby",
     "lint": "yarn lint:sol && yarn lint:ts",
     "lint:sol": "solhint 'contracts/**/*.sol'",
     "lint:ts": "eslint --max-warnings 0",
-    "fmt:sol": "prettier 'contracts/**/*.sol' -w",
-    "prepare": "yarn build && cp -r artifacts dist"
+    "fmt:sol": "prettier 'contracts/**/*.sol' -w"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gnosis/module-factory.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "cesar@dorg.tech",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/gnosis/module-factory/issues"
