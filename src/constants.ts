@@ -1,5 +1,8 @@
 import { ContractAddresses } from "./types";
 
+export const INFURA_KEY =
+  process.env.INFURA_KEY || "b76cba91dc954ceebff27244923224b1";
+
 export const CONTRACT_ADDRESSES: Record<number, ContractAddresses> = {
   1: {
     dao: "",
@@ -8,6 +11,13 @@ export const CONTRACT_ADDRESSES: Record<number, ContractAddresses> = {
     factory: "",
   },
   4: {
+    dao: "0xe40e0F913ABf3C561aE39A72b6D4dDdB9b943793",
+    amb: "0x781c968c88EF6eFCBe13d174b876dc9dc0c3A99b",
+    delay: "0x3cc7aBD1908906e2102D302249c82d083975e1EF",
+    factory: "0xd067410a85ffC8C55f7245DE4BfE16C95329D232",
+  },
+  // for testing purposes
+  31337: {
     dao: "0xe40e0F913ABf3C561aE39A72b6D4dDdB9b943793",
     amb: "0x781c968c88EF6eFCBe13d174b876dc9dc0c3A99b",
     delay: "0x3cc7aBD1908906e2102D302249c82d083975e1EF",
