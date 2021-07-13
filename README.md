@@ -3,9 +3,9 @@
 [![Build Status](https://github.com/gnosis/module-factory/actions/workflows/ci.yml/badge.svg)](https://github.com/gnosis/module-factory/actions)
 [![Coverage Status](https://coveralls.io/repos/github/gnosis/module-factory/badge.svg?branch=master)](https://coveralls.io/github/gnosis/module-factory?branch=master)
 
-The purpose of the Module Factory repository is to make easier the deployment of Safe Modules. Applying the [Minimal Proxy Pattern](https://eips.ethereum.org/EIPS/eip-1167) reduces the gas cost and simplifies the track of deployed modules. Minimal Proxy Pattern has been used because the modules do not need to be upgradeable since a safe can deploy a new one. It's worth mentioning that it costs roughly 5,000 extra gas for each transaction when you use a proxy, so after a certain amount of transactions (~700) it probably will be cheaper to deploy the module from the constructor rather than the proxy.
+The purpose of the Module Factory repository is to make the deployment of Safe Modules easier. Applying the Minimal Proxy Pattern, this module reduces the gas cost and simplifies the track of deployed modules. The Minimal Proxy Pattern has been used because the modules do not need to be upgradeable since a safe can deploy a new one. It's worth mentioning that it costs roughly 5,000 extra gas for each transaction when you use a proxy, so after a certain amount of transactions (~700) it will, probably, be cheaper to deploy the module from the constructor rather than the proxy.
 
-There's also a JS API, allowing the developers to interact with the ProxyFactory Contract more easily. You can check the [factory](./src/factory.ts) file to see more details, it consists on 4 methods, which are:
+There's also a JS API, allowing the developers to interact with the ProxyFactory Contract more easily. You can check the factory file to see more details, it consists of 4 methods, which are:
 
 ### Deploy and set up module
 
@@ -64,7 +64,6 @@ There's also a JS API, allowing the developers to interact with the ProxyFactory
 }
 ```
 
-
 ### Deployments
 
-The latest deployments for each networks (currently only rinkeby and mainnet are supported) can be found in the [constants](./src/constants.ts) file
+The latest deployments for each network (currently only rinkeby and mainnet are supported) can be found in the [constants](./src/constants.ts) file
