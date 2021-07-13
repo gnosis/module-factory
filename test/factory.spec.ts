@@ -11,7 +11,7 @@ import {
 import "@nomiclabs/hardhat-ethers";
 
 const PROVIDER = new JsonRpcProvider(
-  `https://eth-rinkeby.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`
+  `https://rinkeby.infura.io/v3/${process.env.INFURA_KEY}`
 );
 
 describe("Factory JS functions ", () => {
