@@ -13,6 +13,13 @@ export const CONTRACT_ADDRESSES: Record<number, ContractAddresses> = {
     delay: "0xC67cE465f76eAa84bb7560d19F7339D1aEdA201a",
     factory: "0xE9E80739Af9D0DD8AaE6255c96a1266c059469ba",
   },
+  // for testing purposes
+  31337: {
+    dao: "0xe40e0F913ABf3C561aE39A72b6D4dDdB9b943793",
+    amb: "0x781c968c88EF6eFCBe13d174b876dc9dc0c3A99b",
+    delay: "0x3cc7aBD1908906e2102D302249c82d083975e1EF",
+    factory: "0xd067410a85ffC8C55f7245DE4BfE16C95329D232",
+  },
 };
 
 export const CONTRACT_ABIS = {
