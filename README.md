@@ -3,11 +3,15 @@
 [![Build Status](https://github.com/gnosis/module-factory/actions/workflows/ci.yml/badge.svg)](https://github.com/gnosis/module-factory/actions)
 [![Coverage Status](https://coveralls.io/repos/github/gnosis/module-factory/badge.svg?branch=master)](https://coveralls.io/github/gnosis/module-factory?branch=master)
 
-The purpose of the Module Factory repository is to make the deployment of Safe Modules easier. Applying the Minimal Proxy Pattern, this module reduces the gas cost and simplifies the track of deployed modules. The Minimal Proxy Pattern has been used because the modules do not need to be upgradeable since a safe can deploy a new one. It's worth mentioning that it costs roughly 5,000 extra gas for each transaction when you use a proxy, so after a certain amount of transactions (~700) it will, probably, be cheaper to deploy the module from the constructor rather than the proxy.
+The purpose of the Module Factory repository is to make the deployment of Safe Modules easier. 
+Applying the Minimal Proxy Pattern, this module reduces the gas cost and simplifies the track of deployed modules. 
+The Minimal Proxy Pattern has been used because the modules do not need to be upgradeable since a safe can deploy a new one. 
+It's worth mentioning that it costs roughly 5k additional gas for each transaction when using a proxy. Thus, after a certain number of transactions (~700) it would likely be cheaper to deploy the module from the constructor rather than the proxy.
 
-There's also a JS API, allowing the developers to interact with the ProxyFactory Contract more easily. You can check the factory file to see more details, it consists of 4 methods, which are:
+There's also a JS API, allowing the developers to interact with the ProxyFactory Contract more easily. 
+You can check the factory file to see more details, it consists of 4 methods, described individually in the following sections:
 
-### Deploy and set up module
+### 1. Deploy and set up module
 
 - Interface: `deployAndSetUpModule(moduleName, args, provider, chainId)`
 - Arguments:
@@ -28,7 +32,7 @@ There's also a JS API, allowing the developers to interact with the ProxyFactory
 }
 ```
 
-### Calculate new module address
+### 2. Calculate new module address
 
 - Interface: `calculateProxyAddress(factory, masterCopy, initData)`
 - Arguments:
@@ -37,7 +41,7 @@ There's also a JS API, allowing the developers to interact with the ProxyFactory
   - `initData`: Encoded function data that is used to set up the module
 - Returns: A string with the expected address
 
-### Get Module
+### 3. Get Module
 
 - Interface: `getModule(moduleName, address, provider)`
 - Arguments:
@@ -48,7 +52,7 @@ There's also a JS API, allowing the developers to interact with the ProxyFactory
 
 - Returns: A Contract instance of the Module
 
-### Get Factory and Master Copy
+### 4. Get Factory and Master Copy
 
 - Interface: `getFactoryAndMasterCopy(moduleName, provider, chainId)`
 - Arguments:
@@ -64,6 +68,6 @@ There's also a JS API, allowing the developers to interact with the ProxyFactory
 }
 ```
 
-### Deployments
+## Deployments
 
-The latest deployments for each network (currently only rinkeby and mainnet are supported) can be found in the [constants](./src/constants.ts) file
+The latest deployments for each network (supported on mainnet and rinkeby) can be found in the [constants](./src/constants.ts) file
