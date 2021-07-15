@@ -8,7 +8,8 @@ export const deployAndSetUpModule = async (
   moduleName: keyof KnownModules,
   args: Array<number | string>,
   provider: JsonRpcProvider,
-  chainId: number
+  chainId: number,
+  saltNonce: string
 ) => {
   const { factory, module } = await getFactoryAndMasterCopy(
     moduleName,
@@ -20,7 +21,8 @@ export const deployAndSetUpModule = async (
   const expectedModuleAddress = await calculateProxyAddress(
     factory,
     module.address,
-    moduleSetupData
+    moduleSetupData,
+    saltNonce
   );
 
   const deployData = factory.interface.encodeFunctionData("deployModule", [
@@ -41,19 +43,24 @@ export const deployAndSetUpModule = async (
 export const calculateProxyAddress = async (
   factory: Contract,
   masterCopy: string,
-  initData: string
+  initData: string,
+  saltNonce: string
 ) => {
   const masterCopyAddress = masterCopy.toLowerCase().replace(/^0x/, "");
   const byteCode =
     "0x3d602d80600a3d3981f3363d3d373d3d3d363d73" +
     masterCopyAddress +
     "5af43d82803e903d91602b57fd5bf3";
-  const deploymentCode = solidityPack(["bytes"], [byteCode]);
-  const salt = solidityKeccak256(["bytes"], [initData]);
+
+  const salt = solidityKeccak256(
+    ["bytes32", "uint256"],
+    [ethers.utils.solidityKeccak256(["bytes"], [initData]), saltNonce]
+  );
+
   return ethers.utils.getCreate2Address(
     factory.address,
     salt,
-    keccak256(deploymentCode)
+    keccak256(byteCode)
   );
 };
 

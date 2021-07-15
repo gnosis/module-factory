@@ -10,6 +10,7 @@ describe("ModuleProxyFactory", async () => {
   let moduleFactory: Contract;
   let moduleMasterCopy: Contract;
   let initData: string;
+  const saltNonce: string = "0x7255";
 
   beforeEach(async () => {
     const ModuleProxyFactory = await ethers.getContractFactory(
@@ -27,12 +28,14 @@ describe("ModuleProxyFactory", async () => {
       const expectedAddress = await calculateProxyAddress(
         moduleFactory,
         moduleMasterCopy.address,
-        initData
+        initData,
+        saltNonce
       );
 
       const deploymentTx = await moduleFactory.deployModule(
         moduleMasterCopy.address,
-        initData
+        initData,
+        saltNonce
       );
 
       const transaction = await deploymentTx.wait();
@@ -43,8 +46,24 @@ describe("ModuleProxyFactory", async () => {
 
     it("should fail to deploy module because address is zero ", async () => {
       await expect(
-        moduleFactory.deployModule(AddressZero, initData)
+        moduleFactory.deployModule(AddressZero, initData, saltNonce)
       ).to.be.revertedWith("createProxy: address can not be zero");
+    });
+
+    it("should failt to deplay because address it already taken ", async () => {
+      await moduleFactory.deployModule(
+        moduleMasterCopy.address,
+        initData,
+        saltNonce
+      );
+
+      await expect(
+        moduleFactory.deployModule(
+          moduleMasterCopy.address,
+          initData,
+          saltNonce
+        )
+      ).to.be.revertedWith("createProxy: address already taken");
     });
   });
 
@@ -52,7 +71,8 @@ describe("ModuleProxyFactory", async () => {
     it("should deploy module and call init function ", async () => {
       const deploymentTx = await moduleFactory.deployModule(
         moduleMasterCopy.address,
-        initData
+        initData,
+        saltNonce
       );
       const transaction = await deploymentTx.wait();
       const [moduleAddress] = transaction.events[0].args;
@@ -67,10 +87,15 @@ describe("ModuleProxyFactory", async () => {
       const moduleAddress = await calculateProxyAddress(
         moduleFactory,
         moduleMasterCopy.address,
-        initData
+        initData,
+        saltNonce
       );
       await expect(
-        moduleFactory.deployModule(moduleMasterCopy.address, initData)
+        moduleFactory.deployModule(
+          moduleMasterCopy.address,
+          initData,
+          saltNonce
+        )
       )
         .to.emit(moduleFactory, "ModuleProxyCreation")
         .withArgs(moduleAddress, moduleMasterCopy.address);
@@ -78,7 +103,11 @@ describe("ModuleProxyFactory", async () => {
 
     it("should fail to deploy because parameters are not valid ", async () => {
       await expect(
-        moduleFactory.deployModule(moduleMasterCopy.address, "0xaabc")
+        moduleFactory.deployModule(
+          moduleMasterCopy.address,
+          "0xaabc",
+          saltNonce
+        )
       ).to.be.revertedWith("deployModule: initialization failed");
     });
   });

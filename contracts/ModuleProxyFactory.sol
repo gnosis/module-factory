@@ -24,13 +24,18 @@ contract ModuleProxyFactory {
         assembly {
             result := create2(0, add(deployment, 0x20), mload(deployment), salt)
         }
+        require(result != address(0), "createProxy: address already taken");
     }
 
-    function deployModule(address masterCopy, bytes memory initializer)
-        public
-        returns (address proxy)
-    {
-        proxy = createProxy(masterCopy, keccak256(initializer));
+    function deployModule(
+        address masterCopy,
+        bytes memory initializer,
+        uint256 saltNonce
+    ) public returns (address proxy) {
+        proxy = createProxy(
+            masterCopy,
+            keccak256(abi.encodePacked(keccak256(initializer), saltNonce))
+        );
         (bool success, ) = proxy.call(initializer);
         require(success, "deployModule: initialization failed");
 
