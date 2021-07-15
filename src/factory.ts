@@ -1,6 +1,5 @@
 import { ethers, Contract, Signer } from "ethers";
 import { JsonRpcProvider } from "@ethersproject/providers";
-import { keccak256, solidityKeccak256, solidityPack } from "ethers/lib/utils";
 import { CONTRACT_ADDRESSES, CONTRACT_ABIS } from "./constants";
 import { KnownModules } from "./types";
 
@@ -52,7 +51,7 @@ export const calculateProxyAddress = async (
     masterCopyAddress +
     "5af43d82803e903d91602b57fd5bf3";
 
-  const salt = solidityKeccak256(
+  const salt = ethers.utils.solidityKeccak256(
     ["bytes32", "uint256"],
     [ethers.utils.solidityKeccak256(["bytes"], [initData]), saltNonce]
   );
@@ -60,7 +59,7 @@ export const calculateProxyAddress = async (
   return ethers.utils.getCreate2Address(
     factory.address,
     salt,
-    keccak256(byteCode)
+    ethers.utils.keccak256(byteCode)
   );
 };
 

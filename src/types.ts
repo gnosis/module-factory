@@ -7,4 +7,4 @@ export interface KnownContracts {
 
 export type ContractAddresses = Record<keyof KnownContracts, string>;
 
-export type KnownModules = Omit<KnownContracts, "factory" | "oracle">;
+export type KnownModules = Omit<KnownContracts, "factory">;
