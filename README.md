@@ -6,7 +6,8 @@
 The purpose of the Module Factory repository is to make the deployment of Safe Modules easier. 
 Applying the Minimal Proxy Pattern, this module reduces the gas cost and simplifies the track of deployed modules. 
 The Minimal Proxy Pattern has been used because the modules do not need to be upgradeable since a safe can deploy a new one. 
-It's worth mentioning that it costs roughly 5k additional gas for each transaction when using a proxy. Thus, after a certain number of transactions (~700) it would likely be cheaper to deploy the module from the constructor rather than the proxy.
+It's worth mentioning that it costs roughly 5k additional gas for each transaction when using a proxy.
+Thus, after a certain number of transactions (~700) it would likely be cheaper to deploy the module from the constructor rather than the proxy.
 
 There's also a JS API, allowing the developers to interact with the ProxyFactory Contract more easily. 
 You can check the factory file to see more details, it consists of 4 methods, described individually in the following sections:
