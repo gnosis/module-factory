@@ -27,6 +27,7 @@ export const deployAndSetUpModule = async (
   const deployData = factory.interface.encodeFunctionData("deployModule", [
     module.address,
     moduleSetupData,
+    saltNonce
   ]);
   const transaction = {
     data: deployData,

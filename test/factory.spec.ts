@@ -32,7 +32,8 @@ describe("Factory JS functions ", () => {
             1,
           ],
           PROVIDER,
-          await network.chainId
+          await network.chainId,
+          Date.now().toString()
         );
 
       const transaction = await signer.sendTransaction({
