@@ -64,7 +64,7 @@ export const calculateProxyAddress = async (
   );
 };
 
-export const getModule = (
+export const getModuleInstance = (
   moduleName: keyof KnownModules,
   address: string,
   provider: JsonRpcProvider | Signer
@@ -84,7 +84,7 @@ export const getFactoryAndMasterCopy = async (
 ) => {
   const masterCopyAddress = CONTRACT_ADDRESSES[chainId][moduleName];
   const factoryAddress = CONTRACT_ADDRESSES[chainId].factory;
-  const module = getModule(moduleName, masterCopyAddress, provider);
+  const module = getModuleInstance(moduleName, masterCopyAddress, provider);
   const factory = new Contract(factoryAddress, CONTRACT_ABIS.factory, provider);
 
   return {

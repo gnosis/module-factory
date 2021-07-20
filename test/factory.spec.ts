@@ -4,7 +4,7 @@ import { Contract } from "ethers";
 import { expect } from "chai";
 import {
   deployAndSetUpModule,
-  getModule,
+  getModuleInstance,
   getFactoryAndMasterCopy,
 } from "../src/factory";
 
@@ -47,9 +47,9 @@ describe("Factory JS functions ", () => {
     });
   });
 
-  describe("getModule", () => {
+  describe("getModuleInstance", () => {
     it("should retreive module instance", async () => {
-      const module = await getModule(
+      const module = await getModuleInstance(
         "dao",
         "0x327F67C24D1F24fcE614ae8a6D7309bf8736C8B3",
         PROVIDER

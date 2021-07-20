@@ -10,7 +10,7 @@ export const CONTRACT_ADDRESSES: Record<number, ContractAddresses> = {
   4: {
     dao: "0x0049B9A81E602C846807873026C20CC56038E571",
     amb: "0x399E5e6424DF1448dB19fccFbc9E3DCef95c9f34",
-    delay: "0xC67cE465f76eAa84bb7560d19F7339D1aEdA201a",
+    delay: "0x09492F397d823bcD6dEf7f4782DC2a7990C49907",
     factory: "0x569F2e024D0aD6bBfBd8135097DFa7D0641Ae79b",
   },
   // for testing purposes
@@ -59,6 +59,11 @@ export const CONTRACT_ABIS = {
       uint256 cooldown,
       uint256 expiration
     ) public`,
+    `function enableModule(address module) public`,
+    `function txCooldown() public view returns (uint256)`,
+    `function txExpiration() public view returns (uint256)`,
+    `function getModulesPaginated(address start, uint256 pageSize) external
+     view returns (address[] memory array, address next)`,
   ],
   factory: [
     `function deployModule(

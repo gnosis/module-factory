@@ -44,7 +44,7 @@ You can check the factory file to see more details, it consists of 4 methods, de
 
 ### 3. Get Module
 
-- Interface: `getModule(moduleName, address, provider)`
+- Interface: `getModuleInstance(moduleName, address, provider)`
 - Arguments:
 
   - `moduleName`: Name of the module to be deployed, note that it needs to exist as a key in the [CONTRACT_ADDRESSES](./src/constants.ts) object
