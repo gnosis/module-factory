@@ -1,7 +1,7 @@
 import { ethers, Contract, Signer } from "ethers";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { CONTRACT_ADDRESSES, CONTRACT_ABIS } from "./constants";
-import { KnownModules } from "./types";
+import {ContractAddresses, KnownModules} from "./types";
 
 export const deployAndSetUpModule = async (
   moduleName: keyof KnownModules,
@@ -77,13 +77,24 @@ export const getModuleInstance = (
   return module;
 };
 
-export const getFactoryAndMasterCopy = async (
+export const getModuleContractAddress = (
+  chainId: number,
+  module: keyof ContractAddresses
+): string => {
+  return CONTRACT_ADDRESSES[chainId][module];
+};
+
+export const getFactoryContractAddress = (chainId: number): string => {
+  return CONTRACT_ADDRESSES[chainId].factory;
+};
+
+export const getFactoryAndMasterCopy = (
   moduleName: keyof KnownModules,
   provider: JsonRpcProvider,
   chainId: number
 ) => {
-  const masterCopyAddress = CONTRACT_ADDRESSES[chainId][moduleName];
-  const factoryAddress = CONTRACT_ADDRESSES[chainId].factory;
+  const masterCopyAddress = getModuleContractAddress(chainId, moduleName);
+  const factoryAddress = getFactoryContractAddress(chainId);
   const module = getModuleInstance(moduleName, masterCopyAddress, provider);
   const factory = new Contract(factoryAddress, CONTRACT_ABIS.factory, provider);
 
