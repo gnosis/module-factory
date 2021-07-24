@@ -1,12 +1,13 @@
 import { JsonRpcProvider } from "@ethersproject/providers";
-import { ethers } from "hardhat";
-import { Contract } from "ethers";
 import { expect } from "chai";
+import { Contract } from "ethers";
+import { ethers } from "hardhat";
+
 import {
   deployAndSetUpModule,
   getModuleInstance,
   getFactoryAndMasterCopy,
-} from "../src/factory";
+} from "../src";
 
 import "@nomiclabs/hardhat-ethers";
 
@@ -32,7 +33,7 @@ describe("Factory JS functions ", () => {
             1,
           ],
           PROVIDER,
-          await network.chainId,
+          network.chainId,
           Date.now().toString()
         );
 
@@ -64,7 +65,7 @@ describe("Factory JS functions ", () => {
       const { module, factory } = await getFactoryAndMasterCopy(
         "dao",
         PROVIDER,
-        await network.chainId
+        network.chainId
       );
       expect(module).to.be.instanceOf(Contract);
       expect(factory).to.be.instanceOf(Contract);

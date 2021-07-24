@@ -1,7 +1,8 @@
-import { ethers, Contract, Signer } from "ethers";
 import { JsonRpcProvider } from "@ethersproject/providers";
-import { CONTRACT_ADDRESSES, CONTRACT_ABIS } from "./constants";
-import {ContractAddresses, KnownModules} from "./types";
+import { Contract, ethers, Signer } from "ethers";
+
+import { CONTRACT_ABIS, CONTRACT_ADDRESSES } from "./constants";
+import { ContractAddresses, KnownModules } from "./types";
 
 export const deployAndSetUpModule = async (
   moduleName: keyof KnownModules,
@@ -10,14 +11,14 @@ export const deployAndSetUpModule = async (
   chainId: number,
   saltNonce: string
 ) => {
-  const { factory, module } = await getFactoryAndMasterCopy(
+  const { factory, module } = getFactoryAndMasterCopy(
     moduleName,
     provider,
     chainId
   );
   const moduleSetupData = module.interface.encodeFunctionData("setUp", args);
 
-  const expectedModuleAddress = await calculateProxyAddress(
+  const expectedModuleAddress = calculateProxyAddress(
     factory,
     module.address,
     moduleSetupData,
@@ -27,7 +28,7 @@ export const deployAndSetUpModule = async (
   const deployData = factory.interface.encodeFunctionData("deployModule", [
     module.address,
     moduleSetupData,
-    saltNonce
+    saltNonce,
   ]);
   const transaction = {
     data: deployData,
@@ -40,7 +41,7 @@ export const deployAndSetUpModule = async (
   };
 };
 
-export const calculateProxyAddress = async (
+export const calculateProxyAddress = (
   factory: Contract,
   masterCopy: string,
   initData: string,
@@ -73,8 +74,7 @@ export const getModuleInstance = (
   if (moduleIsNotSupported) {
     throw new Error("Module " + moduleName + " not supported");
   }
-  const module = new Contract(address, CONTRACT_ABIS[moduleName], provider);
-  return module;
+  return new Contract(address, CONTRACT_ABIS[moduleName], provider);
 };
 
 export const getModuleContractAddress = (
