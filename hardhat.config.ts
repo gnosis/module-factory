@@ -9,12 +9,10 @@ import "@nomiclabs/hardhat-etherscan";
 import "hardhat-deploy";
 import "solidity-coverage";
 
-const { ETHERSCAN_KEY } = process.env;
+const { ETHERSCAN_KEY, ALCHEMY_KEY, ETH_KEY } = process.env;
 
-const INFURA_KEY = process.env.INFURA_KEY || "b76cba91dc954ceebff27244923224b1";
-const ETH_KEY =
-  process.env.ETH_KEY ||
-  "990b68b61853f6418233b1f502a220a8770bb38849d9bd8fc552ed55f5899365";
+const PRIVATE_KEY = ETH_KEY || "990b68b61853f6418233b1f502a220a8770bb38849d9bd8fc552ed55f5899365";
+const ALCHEMY_NODE_KEY = ALCHEMY_KEY || "5fdcyEw3_EyCwcUQI0CcuwjNS1C_0k5S";
 
 const config: HardhatUserConfig = {
   paths: {
@@ -24,10 +22,17 @@ const config: HardhatUserConfig = {
   namedAccounts: {
     deployer: 0,
   },
+  defaultNetwork: "hardhat",
   networks: {
+    hardhat: {
+      forking: {
+        url: `https://eth-rinkeby.alchemyapi.io/v2/${ALCHEMY_NODE_KEY}`,
+        blockNumber: 8450000,
+      },
+    },
     rinkeby: {
-      url: `https://rinkeby.infura.io/v3/${INFURA_KEY}`,
-      accounts: [`0x${ETH_KEY}`],
+      url: `https://eth-rinkeby.alchemyapi.io/v2/${ALCHEMY_NODE_KEY}`,
+      accounts: [`0x${PRIVATE_KEY}`],
     },
   },
   mocha: {
